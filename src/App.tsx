@@ -1,12 +1,9 @@
-import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import "./assets/scss/style.scss";
 
-import {
-  AuthPage,
-  ErrorComponent,
-  notificationProvider,
-} from "@refinedev/antd";
+import { ErrorComponent, notificationProvider } from "@refinedev/antd";
+import { AuthPage } from "pages/auth";
 import "@refinedev/antd/dist/reset.css";
 
 import routerBindings, {
@@ -53,7 +50,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
@@ -110,10 +106,18 @@ function App() {
                   element={
                     <AuthPage
                       type="login"
-                      formProps={{
-                        initialValues: {
-                          email: "info@refine.dev",
-                          password: "refine-supabase",
+                      providers={[
+                        {
+                          name: "google",
+                          label: "Sign in with Google",
+                        },
+                      ]}
+                      wrapperProps={{
+                        style: {
+                          backgroundImage:
+                            "url(https://images.unsplash.com/photo-1508108712903-49b7ef9b1df8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2669&q=80)",
+                          backgroundSize: "cover",
+                          minHeight: "100vh",
                         },
                       }}
                     />

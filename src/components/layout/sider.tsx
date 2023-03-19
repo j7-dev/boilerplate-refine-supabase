@@ -14,7 +14,7 @@ import {
   useActiveAuthProvider,
   pickNotDeprecated,
 } from "@refinedev/core";
-import { Title as DefaultTitle } from "@refinedev/antd";
+import { Title as DefaultTitle } from "./title";
 import {
   DashboardOutlined,
   LogoutOutlined,
