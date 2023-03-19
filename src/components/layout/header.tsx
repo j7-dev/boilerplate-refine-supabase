@@ -29,7 +29,6 @@ export const Header: React.FC<RefineLayoutHeaderProps> = () => {
   const { data: user } = useGetIdentity({
     v3LegacyAuthProviderCompatible: Boolean(authProvider?.isLegacy),
   });
-  console.log("🚀 ~ file: header.tsx:32 ~ user:", user);
 
   const shouldRenderHeader = user && (user.name || user.avatar);
 
