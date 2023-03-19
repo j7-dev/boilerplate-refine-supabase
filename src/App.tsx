@@ -5,7 +5,6 @@ import "./assets/scss/style.scss";
 import {
   AuthPage,
   ErrorComponent,
-  Layout,
   notificationProvider,
 } from "@refinedev/antd";
 import "@refinedev/antd/dist/reset.css";
@@ -32,10 +31,12 @@ import {
 } from "pages/products";
 import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
-import { supabaseClient } from "utility";
+import { supabaseClient } from "utils";
 import authProvider from "./authProvider";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
+import resources from "./resources";
+import { Layout } from "./components/layout";
 
 function App() {
   const { t, i18n } = useTranslation();
@@ -65,28 +66,7 @@ function App() {
             routerProvider={routerBindings}
             notificationProvider={notificationProvider}
             i18nProvider={i18nProvider}
-            resources={[
-              {
-                name: "products",
-                list: "/products",
-                create: "/products/create",
-                edit: "/products/edit/:id",
-                show: "/products/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-              {
-                name: "categories",
-                list: "/categories",
-                create: "/categories/create",
-                edit: "/categories/edit/:id",
-                show: "/categories/show/:id",
-                meta: {
-                  canDelete: true,
-                },
-              },
-            ]}
+            resources={resources}
             options={{
               syncWithLocation: true,
               warnWhenUnsavedChanges: true,
@@ -96,7 +76,7 @@ function App() {
               <Route
                 element={
                   <Authenticated fallback={<CatchAllNavigate to="/login" />}>
-                    <Layout Header={Header}>
+                    <Layout>
                       <Outlet />
                     </Layout>
                   </Authenticated>
