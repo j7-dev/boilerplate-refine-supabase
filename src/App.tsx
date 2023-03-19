@@ -1,5 +1,6 @@
 import { Authenticated, GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import "./assets/scss/style.scss";
 
 import {
   AuthPage,
@@ -15,6 +16,8 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import { dataProvider, liveProvider } from "@refinedev/supabase";
+import { mocksProvider } from "mocks/mocksProvider";
+
 import {
   CategoryCreate,
   CategoryEdit,
@@ -43,13 +46,20 @@ function App() {
     getLocale: () => i18n.language,
   };
 
+  const defaultDataProvider =
+    process.env.REACT_APP_MOCK_API === "true"
+      ? mocksProvider
+      : dataProvider(supabaseClient);
+
   return (
     <BrowserRouter>
       <GitHubBanner />
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <Refine
-            dataProvider={dataProvider(supabaseClient)}
+            dataProvider={{
+              default: defaultDataProvider,
+            }}
             liveProvider={liveProvider(supabaseClient)}
             authProvider={authProvider}
             routerProvider={routerBindings}

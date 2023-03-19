@@ -5,6 +5,11 @@ import App from "./App";
 import "./i18n";
 import reportWebVitals from "./reportWebVitals";
 
+if (process.env.REACT_APP_MOCK_API === "true") {
+  const { worker } = require("./mocks/browser");
+  worker.start();
+}
+
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 
