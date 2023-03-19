@@ -33,7 +33,6 @@ import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { supabaseClient } from "utils";
 import authProvider from "./authProvider";
-import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import resources from "./resources";
 import { Layout } from "./components/layout";
@@ -124,7 +123,7 @@ function App() {
               <Route
                 element={
                   <Authenticated>
-                    <Layout Header={Header}>
+                    <Layout>
                       <Outlet />
                     </Layout>
                   </Authenticated>

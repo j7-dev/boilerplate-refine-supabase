@@ -20,9 +20,13 @@ import {
   LogoutOutlined,
   UnorderedListOutlined,
   BarsOutlined,
+  LeftOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Grid, ConfigProvider, Drawer, Button } from "antd";
 import type { RefineLayoutSiderProps } from "@refinedev/antd";
+import { useColor } from "hooks";
+import packageJson from "../../../package.json";
 
 const drawerButtonStyles: CSSProperties = {
   borderTopLeftRadius: 0,
@@ -39,6 +43,7 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({
   render,
   meta,
 }) => {
+  const { colorPrimary } = useColor();
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const isExistAuthentication = useIsExistAuthentication();
@@ -166,29 +171,27 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({
       <>
         {dashboard}
         {items}
-        {logout}
+        {/* {logout} */}
       </>
     );
   };
 
   const renderMenu = () => {
     return (
-      <>
-        <Menu
-          theme="dark"
-          selectedKeys={selectedKey ? [selectedKey] : []}
-          defaultOpenKeys={defaultOpenKeys}
-          mode="inline"
-          onClick={() => {
-            setDrawerOpen(false);
-            if (!breakpoint.lg) {
-              setCollapsed(true);
-            }
-          }}
-        >
-          {renderSider()}
-        </Menu>
-      </>
+      <Menu
+        className="mt-4"
+        selectedKeys={[selectedKey]}
+        defaultOpenKeys={defaultOpenKeys}
+        mode="inline"
+        onClick={() => {
+          setDrawerOpen(false);
+          if (!breakpoint.lg) {
+            setCollapsed(true);
+          }
+        }}
+      >
+        {renderSider()}
+      </Menu>
     );
   };
 
@@ -200,14 +203,26 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({
           onClose={() => setDrawerOpen(false)}
           placement="left"
           closable={false}
-          width={200}
+          width={280}
           bodyStyle={{
             padding: 0,
+            overflow: "hidden",
           }}
           maskClosable={true}
         >
           <Layout>
-            <Layout.Sider style={{ height: "100vh", overflow: "hidden" }}>
+            <Layout.Sider
+              width={280}
+              style={{
+                overflow: "auto",
+                height: "100vh",
+                position: "fixed",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                backgroundColor: colorPrimary,
+              }}
+            >
               <RenderToTitle collapsed={false} />
               {renderMenu()}
             </Layout.Sider>
@@ -229,16 +244,62 @@ export const Sider: React.FC<RefineLayoutSiderProps> = ({
     }
 
     return (
-      <Layout.Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(collapsed: boolean): void => setCollapsed(collapsed)}
-        collapsedWidth={80}
-        breakpoint="lg"
-      >
-        <RenderToTitle collapsed={collapsed} />
-        {renderMenu()}
-      </Layout.Sider>
+      <>
+        <Layout.Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(collapsed: boolean): void => setCollapsed(collapsed)}
+          width={280}
+          collapsedWidth={80}
+          breakpoint="lg"
+          style={{
+            height: "100vh",
+            position: "fixed",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            backgroundColor: colorPrimary,
+            zIndex: 10,
+          }}
+          trigger={null}
+        >
+          <RenderToTitle collapsed={collapsed} />
+          {renderMenu()}
+          <p className="text-white fixed bottom-0 left-4 italic">
+            {`v ${packageJson.version}`}
+          </p>
+          <Button
+            shape="circle"
+            size="small"
+            onClick={() => setCollapsed(!collapsed)}
+            className="absolute top-32 -right-3 z-20 shadow-lg"
+            icon={
+              <>
+                {collapsed ? (
+                  <RightOutlined className="text-[10px] relative -top-[1px] left-[1px]" />
+                ) : (
+                  <LeftOutlined className="text-[10px] relative -top-[1px] left-[0px]" />
+                )}
+              </>
+            }
+          ></Button>
+        </Layout.Sider>
+
+        <Layout.Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(collapsed: boolean): void => setCollapsed(collapsed)}
+          width={280}
+          collapsedWidth={80}
+          breakpoint="lg"
+          style={{
+            overflow: "auto",
+            height: "100vh",
+            opacity: 0,
+          }}
+          trigger={null}
+        />
+      </>
     );
   };
 
