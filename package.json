@@ -1,87 +1,90 @@
 {
-  "name": "tinwing-insurance",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@ant-design/icons": "^5.0.1",
-    "@faker-js/faker": "^7.6.0",
-    "@refinedev/antd": "^5.0.0",
-    "@refinedev/cli": "^2.0.0",
-    "@refinedev/core": "^4.0.0",
-    "@refinedev/inferencer": "^3.0.0",
-    "@refinedev/kbar": "^1.0.0",
-    "@refinedev/react-router-v6": "^4.0.0",
-    "@refinedev/simple-rest": "^4.1.0",
-    "@refinedev/supabase": "^5.0.0",
-    "antd": "^5.0.5",
-    "i18next": "^20.1.0",
-    "i18next-browser-languagedetector": "^6.1.1",
-    "i18next-xhr-backend": "^3.2.2",
-    "lodash-es": "^4.17.21",
-    "nanoid": "^4.0.1",
-    "postcss-import": "^15.1.0",
-    "postcss-nesting": "^11.2.1",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "react-highlight-words": "^0.20.0",
-    "react-i18next": "^11.8.11",
-    "react-icons": "^4.8.0",
-    "react-router-dom": "^6.8.1",
-    "react-scripts": "^5.0.0",
-    "zod": "^3.21.4"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.1.1",
-    "@testing-library/user-event": "^14.1.1",
-    "@types/jest": "^29.2.4",
-    "@types/node": "^12.20.11",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "@types/react-highlight-words": "^0.16.4",
-    "autoprefixer": "^10.4.14",
-    "env-cmd": "^10.1.0",
-    "msw": "^1.1.0",
-    "postcss": "^8.4.21",
-    "pre-commit": "^1.2.2",
-    "sass": "^1.59.3",
-    "sass-loader": "^13.2.1",
-    "tailwindcss": "^3.2.7",
-    "typescript": "^4.7.4",
-    "web-vitals": "^1.1.1"
-  },
-  "scripts": {
-    "dev": "env-cmd -f ./env/.env.local refine start",
-    "dev:prod": "env-cmd -f ./env/.env.prod refine start",
-    "build": "env-cmd -f ./env/.env.prod refine build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "refine": "refine",
-    "push": "npm version patch && git push",
-    "lint": "eslint src/**/*.{ts,tsx}",
-    "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
-    "prettier": "npx prettier -c ./src",
-    "prettier:write": "npx prettier -w ./src"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "msw": {
-    "workerDirectory": "public"
-  }
+    "name": "tinwing-insurance",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@ant-design/icons": "^5.0.1",
+        "@faker-js/faker": "^7.6.0",
+        "@refinedev/antd": "^5.0.0",
+        "@refinedev/cli": "^2.0.0",
+        "@refinedev/core": "^4.0.0",
+        "@refinedev/inferencer": "^3.0.0",
+        "@refinedev/kbar": "^1.0.0",
+        "@refinedev/react-router-v6": "^4.0.0",
+        "@refinedev/simple-rest": "^4.1.0",
+        "@refinedev/supabase": "^5.0.0",
+        "antd": "^5.0.5",
+        "i18next": "^20.1.0",
+        "i18next-browser-languagedetector": "^6.1.1",
+        "i18next-xhr-backend": "^3.2.2",
+        "lodash-es": "^4.17.21",
+        "nanoid": "^4.0.1",
+        "postcss-import": "^15.1.0",
+        "postcss-nesting": "^11.2.1",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "react-highlight-words": "^0.20.0",
+        "react-i18next": "^11.8.11",
+        "react-icons": "^4.8.0",
+        "react-router-dom": "^6.8.1",
+        "react-scripts": "^5.0.0",
+        "zod": "^3.21.4"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^5.16.4",
+        "@testing-library/react": "^13.1.1",
+        "@testing-library/user-event": "^14.1.1",
+        "@types/jest": "^29.2.4",
+        "@types/node": "^12.20.11",
+        "@types/react": "^18.0.0",
+        "@types/react-dom": "^18.0.0",
+        "@types/react-highlight-words": "^0.16.4",
+        "autoprefixer": "^10.4.14",
+        "env-cmd": "^10.1.0",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "msw": "^1.1.0",
+        "postcss": "^8.4.21",
+        "pre-commit": "^1.2.2",
+        "sass": "^1.59.3",
+        "sass-loader": "^13.2.1",
+        "tailwindcss": "^3.2.7",
+        "typescript": "^4.7.4",
+        "web-vitals": "^1.1.1"
+    },
+    "scripts": {
+        "dev": "env-cmd -f ./env/.env.local refine start",
+        "dev:prod": "env-cmd -f ./env/.env.prod refine start",
+        "build": "env-cmd -f ./env/.env.prod refine build",
+        "deploy": "netlify deploy --prod",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject",
+        "refine": "refine",
+        "push": "npm version patch && git push",
+        "lint": "eslint src/**/*.{ts,tsx}",
+        "lint:fix": "eslint --fix src/**/*.{ts,tsx}",
+        "prettier": "npx prettier -c ./src",
+        "prettier:write": "npx prettier -w ./src"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "msw": {
+        "workerDirectory": "public"
+    }
 }

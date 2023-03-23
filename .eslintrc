@@ -1,0 +1,87 @@
+{
+	"env": {
+		"browser": true,
+		"es6": true,
+		"jest": true,
+		"amd": true,
+		"commonjs": true
+	},
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": [
+		"@typescript-eslint",
+		"prettier"
+	],
+	"extends": [
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended",
+		"prettier"
+	],
+	"overrides": [
+		{
+			"files": [
+				"*.js, *.d.ts"
+			],
+			"rules": {
+				"@typescript-eslint/no-var-requires": "off",
+				"no-unused-vars": "off"
+			}
+		}
+	],
+	"rules": {
+		"no-console": "warn",
+		"indent": "off",
+		"@typescript-eslint/no-use-before-define": [
+			"error"
+		],
+		"@typescript-eslint/ban-types": "off",
+		"@typescript-eslint/interface-name-prefix": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"react/prop-types": "off",
+		"react/react-in-jsx-scope": "off",
+		"no-duplicate-imports": "error",
+		"prettier/prettier": [
+			"off",
+			{
+				"singleQuote": true,
+				"semi": false,
+				"endOfLine": "auto"
+			}
+		],
+		"no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_"
+			}
+		],
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_"
+			}
+		],
+		"lines-around-comment": [
+			"error",
+			{
+				"beforeBlockComment": true,
+				"afterBlockComment": true,
+				"beforeLineComment": true,
+				"afterLineComment": true,
+				"allowBlockStart": true,
+				"allowBlockEnd": true,
+				"allowObjectStart": true,
+				"allowObjectEnd": true,
+				"allowArrayStart": true,
+				"allowArrayEnd": true
+			}
+		]
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	}
+}
