@@ -1,223 +1,229 @@
-import { AuthBindings } from "@refinedev/core";
+import { AuthBindings } from '@refinedev/core'
 
-import { supabaseClient } from "utils";
+import { supabaseClient } from 'utils'
+
+const needAuth = process.env?.REACT_APP_NEED_AUTH === 'false' ? false : true
 
 const authProvider: AuthBindings = {
-  login: async ({ email, password, providerName }) => {
-    // sign in with oauth
-    try {
-      if (providerName) {
-        const { data, error } = await supabaseClient.auth.signInWithOAuth({
-          provider: providerName,
-        });
+    login: async ({ email, password, providerName }) => {
+        // sign in with oauth
+
+        try {
+            if (providerName) {
+                const { data, error } =
+                    await supabaseClient.auth.signInWithOAuth({
+                        provider: providerName,
+                    })
+
+                if (error) {
+                    return {
+                        success: false,
+                        error,
+                    }
+                }
+
+                if (data?.url || !needAuth) {
+                    return {
+                        success: true,
+                        redirectTo: '/',
+                    }
+                }
+            }
+
+            // sign in with email and password
+
+            const { data, error } =
+                await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password,
+                })
+
+            if (error) {
+                return {
+                    success: false,
+                    error,
+                }
+            }
+
+            if (data?.user) {
+                return {
+                    success: true,
+                    redirectTo: '/',
+                }
+            }
+        } catch (error: any) {
+            return {
+                success: false,
+                error,
+            }
+        }
+
+        return {
+            success: false,
+            error: new Error('Login failed'),
+        }
+    },
+    register: async ({ email, password }) => {
+        try {
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+            })
+
+            if (error) {
+                return {
+                    success: false,
+                    error,
+                }
+            }
+
+            if (data) {
+                return {
+                    success: true,
+                    redirectTo: '/',
+                }
+            }
+        } catch (error: any) {
+            return {
+                success: false,
+                error,
+            }
+        }
+
+        return {
+            success: false,
+            error: new Error('Register failed'),
+        }
+    },
+    forgotPassword: async ({ email }) => {
+        try {
+            const { data, error } =
+                await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: `${window.location.origin}/update-password`,
+                })
+
+            if (error) {
+                return {
+                    success: false,
+                    error,
+                }
+            }
+
+            if (data) {
+                return {
+                    success: true,
+                }
+            }
+        } catch (error: any) {
+            return {
+                success: false,
+                error,
+            }
+        }
+
+        return {
+            success: false,
+            error: new Error('Forgot Password password failed'),
+        }
+    },
+    updatePassword: async ({ password }) => {
+        try {
+            const { data, error } = await supabaseClient.auth.updateUser({
+                password,
+            })
+
+            if (error) {
+                return {
+                    success: false,
+                    error,
+                }
+            }
+
+            if (data) {
+                return {
+                    success: true,
+                    redirectTo: '/',
+                }
+            }
+        } catch (error: any) {
+            return {
+                success: false,
+                error,
+            }
+        }
+        return {
+            success: false,
+            error: new Error('Update Password password failed'),
+        }
+    },
+    logout: async () => {
+        const { error } = await supabaseClient.auth.signOut()
 
         if (error) {
-          return {
-            success: false,
-            error,
-          };
+            return {
+                success: false,
+                error,
+            }
         }
 
-        if (data?.url) {
-          return {
+        return {
             success: true,
-            redirectTo: "/",
-          };
+            redirectTo: '/',
         }
-      }
+    },
+    onError: async (error) => {
+        console.error(error)
+        return { error }
+    },
+    check: async () => {
+        if (!needAuth) return { authenticated: true }
 
-      // sign in with email and password
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
-      });
+        try {
+            const { data } = await supabaseClient.auth.getSession()
+            const { session } = data
 
-      if (error) {
-        return {
-          success: false,
-          error,
-        };
-      }
-
-      if (data?.user) {
-        return {
-          success: true,
-          redirectTo: "/",
-        };
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        error,
-      };
-    }
-
-    return {
-      success: false,
-      error: new Error("Login failed"),
-    };
-  },
-  register: async ({ email, password }) => {
-    try {
-      const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
-      });
-
-      if (error) {
-        return {
-          success: false,
-          error,
-        };
-      }
-
-      if (data) {
-        return {
-          success: true,
-          redirectTo: "/",
-        };
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        error,
-      };
-    }
-
-    return {
-      success: false,
-      error: new Error("Register failed"),
-    };
-  },
-  forgotPassword: async ({ email }) => {
-    try {
-      const { data, error } = await supabaseClient.auth.resetPasswordForEmail(
-        email,
-        {
-          redirectTo: `${window.location.origin}/update-password`,
+            if (!session) {
+                return {
+                    authenticated: false,
+                    error: new Error('Not authenticated'),
+                    logout: true,
+                    redirectTo: '/login',
+                }
+            }
+        } catch (error: any) {
+            return {
+                authenticated: false,
+                error: error || new Error('Not authenticated'),
+                logout: true,
+                redirectTo: '/login',
+            }
         }
-      );
 
-      if (error) {
         return {
-          success: false,
-          error,
-        };
-      }
+            authenticated: true,
+        }
+    },
+    getPermissions: async () => {
+        const user = await supabaseClient.auth.getUser()
 
-      if (data) {
-        return {
-          success: true,
-        };
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        error,
-      };
-    }
+        if (user) {
+            return user.data.user?.role
+        }
 
-    return {
-      success: false,
-      error: new Error("Forgot Password password failed"),
-    };
-  },
-  updatePassword: async ({ password }) => {
-    try {
-      const { data, error } = await supabaseClient.auth.updateUser({
-        password,
-      });
+        return null
+    },
+    getIdentity: async () => {
+        const { data } = await supabaseClient.auth.getUser()
 
-      if (error) {
-        return {
-          success: false,
-          error,
-        };
-      }
+        if (data?.user) {
+            return {
+                ...data.user,
+                name: data.user.email,
+            }
+        }
 
-      if (data) {
-        return {
-          success: true,
-          redirectTo: "/",
-        };
-      }
-    } catch (error: any) {
-      return {
-        success: false,
-        error,
-      };
-    }
-    return {
-      success: false,
-      error: new Error("Update Password password failed"),
-    };
-  },
-  logout: async () => {
-    const { error } = await supabaseClient.auth.signOut();
+        return null
+    },
+}
 
-    if (error) {
-      return {
-        success: false,
-        error,
-      };
-    }
-
-    return {
-      success: true,
-      redirectTo: "/",
-    };
-  },
-  onError: async (error) => {
-    console.error(error);
-    return { error };
-  },
-  check: async () => {
-    try {
-      const { data } = await supabaseClient.auth.getSession();
-      const { session } = data;
-
-      if (!session) {
-        return {
-          authenticated: false,
-          error: new Error("Not authenticated"),
-          logout: true,
-          redirectTo: "/login",
-        };
-      }
-    } catch (error: any) {
-      return {
-        authenticated: false,
-        error: error || new Error("Not authenticated"),
-        logout: true,
-        redirectTo: "/login",
-      };
-    }
-
-    return {
-      authenticated: true,
-    };
-  },
-  getPermissions: async () => {
-    const user = await supabaseClient.auth.getUser();
-
-    if (user) {
-      return user.data.user?.role;
-    }
-
-    return null;
-  },
-  getIdentity: async () => {
-    const { data } = await supabaseClient.auth.getUser();
-
-    if (data?.user) {
-      return {
-        ...data.user,
-        name: data.user.email,
-      };
-    }
-
-    return null;
-  },
-};
-
-export default authProvider;
+export default authProvider

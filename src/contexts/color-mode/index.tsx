@@ -3,7 +3,7 @@ import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 type ColorModeContextType = {
   mode: string;
-  setMode: (mode: string) => void;
+  setMode: (_mode: string) => void;
 };
 
 export const ColorModeContext = createContext<ColorModeContextType>(
@@ -14,11 +14,14 @@ export const ColorModeContextProvider: React.FC<PropsWithChildren> = ({
   children,
 }) => {
   const colorModeFromLocalStorage = localStorage.getItem("colorMode");
-  const isSystemPreferenceDark = window?.matchMedia(
+  const _isSystemPreferenceDark = window?.matchMedia(
     "(prefers-color-scheme: dark)"
   ).matches;
 
-  const systemPreference = isSystemPreferenceDark ? "dark" : "light";
+  // const systemPreference = isSystemPreferenceDark ? "dark" : "light";
+
+  const systemPreference = "light";
+
   const [mode, setMode] = useState(
     colorModeFromLocalStorage || systemPreference
   );
